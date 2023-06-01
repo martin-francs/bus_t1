@@ -30,7 +30,7 @@ String result = "Hello World...!";
       String? cameraScanResult = await scanner.scan();
       setState(() {
         result = cameraScanResult!; // setting string result with cameraScanResult
-        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return busroutescreen(id:result);}));
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return Busroutescreen(documentId:result);}));
       });
       }
       else{
@@ -39,7 +39,7 @@ String result = "Hello World...!";
           String? cameraScanResult = await scanner.scan();
       setState(() {
         result = cameraScanResult!; // setting string result with cameraScanResult
-        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return busroutescreen(id:result);}));
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return Busroutescreen(documentId:result);}));
       });
         }
       }
