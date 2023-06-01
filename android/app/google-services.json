@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "664829385681",
+    "project_id": "bus-t2023",
+    "storage_bucket": "bus-t2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664829385681:android:2a6a88cfaba34ec6f75ef0",
+        "android_client_info": {
+          "package_name": "com.example.bus_t"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC14jxJdglNv_Xe6GhCGvqRXa8PrbQhOfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
