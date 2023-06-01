@@ -24,11 +24,26 @@ String result = "Hello World...!";
 
   Future _scanQR() async {
     try {
+      var camerastatus = await Permission.camera.status;
+      if(camerastatus.isGranted)
+      {
       String? cameraScanResult = await scanner.scan();
       setState(() {
         result = cameraScanResult!; // setting string result with cameraScanResult
         Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return busroutescreen(id:result);}));
       });
+      }
+      else{
+        var isgrant =await Permission.camera.request();
+        if(isgrant.isGranted){
+          String? cameraScanResult = await scanner.scan();
+      setState(() {
+        result = cameraScanResult!; // setting string result with cameraScanResult
+        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){return busroutescreen(id:result);}));
+      });
+        }
+      }
+      
     } on PlatformException catch (e) {
       print(e);
     }
