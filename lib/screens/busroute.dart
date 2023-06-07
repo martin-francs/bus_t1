@@ -35,8 +35,9 @@ class _BusroutescreenState extends State<Busroutescreen> {
 
         // Access specific fields
         setState(() {
-          field1 = data['BusName'];
-          field2 = data['BUSNO'];
+          field1 = data['BUSNO'];
+          field2 = data['BusName'];
+         
         });
       } else {
         // Document does not exist
@@ -58,8 +59,8 @@ class _BusroutescreenState extends State<Busroutescreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('BUS name: $field1'),
-            Text('Bus No: $field2'),
+            Text('BUS no: $field1'),
+            Text('BUS NAME: $field2'),
             Text(widget.documentId),
           ],
         ),

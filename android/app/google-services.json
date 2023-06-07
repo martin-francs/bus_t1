@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "664829385681",
-    "project_id": "bus-t2023",
-    "storage_bucket": "bus-t2023.appspot.com"
+    "project_number": "901694103879",
+    "project_id": "bus--ti",
+    "storage_bucket": "bus--ti.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:664829385681:android:2a6a88cfaba34ec6f75ef0",
+        "mobilesdk_app_id": "1:901694103879:android:4b0c8fe2e52107a2182c62",
         "android_client_info": {
           "package_name": "com.example.bus_t"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "901694103879-hc6534hr9ablk74bmgqgdbp1qm5502i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyC14jxJdglNv_Xe6GhCGvqRXa8PrbQhOfM"
+          "current_key": "AIzaSyCvpH_oY5841WHB43wm3LGeZzHSL6Dsidc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901694103879-hc6534hr9ablk74bmgqgdbp1qm5502i7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
