@@ -12,6 +12,10 @@ class Busroutescreen extends StatefulWidget {
 }
 
 class _BusroutescreenState extends State<Busroutescreen>  {
+  String field1 = '';
+  //String documentId='KL33N9599';
+  String field2 = '';
+  
   Future<Map<String, dynamic>> _fetchMapFields() async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
@@ -20,6 +24,9 @@ class _BusroutescreenState extends State<Busroutescreen>  {
           .get();
 
       if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        field1 = data['BUSNO'];
+        field2 = data['BusName'];
         final Map<String, dynamic> mapFields = snapshot.data()!['STOPS'];
         return mapFields;
       } else {
@@ -32,6 +39,8 @@ class _BusroutescreenState extends State<Busroutescreen>  {
 
   String _selectedOption = 'Placid';
   String _selectedOption1 = 'Placid';
+   double _result = 0.0;
+   bool _showResult = false;
   List<DropdownMenuItem<String>> _dropdownItems = [];
   List<DropdownMenuItem<String>> _dropdownItems1 = [];
 
@@ -63,18 +72,47 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     setState(() {
       _dropdownItems = items;
       _dropdownItems1 = items1;
+      
     });
   }
+  void _submitOption() async {
+  final DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance
+          .collection('buses')
+          .doc(widget.documentId)
+          .get();
 
+  if (snapshot.exists) {
+    final Map<String, dynamic> mapFields = snapshot.data()!['km'];
+
+    final double valueA = double.tryParse(mapFields[_selectedOption])  ?? 0.0;
+    final double valueB = double.tryParse(mapFields[_selectedOption1])  ?? 0.0;
+    double result = valueA - valueB;
+    if(result<0){
+      result=result*-1;
+    }
+
+    setState(() 
+    {
+        _result = result;
+        _showResult = true;
+      });
+    } else {
+      print('Document does not exist');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BUS T'),
+          title: Text('BUS NAME: $field2'),
         ),
         body: Column(
           children: [
+            SizedBox(height: 20),
+            Text('BUS no: $field1'),
+            SizedBox(height: 20),
             Row(
               children: [
                 Text("Starting Location"),
@@ -109,7 +147,25 @@ class _BusroutescreenState extends State<Busroutescreen>  {
                     items: _dropdownItems1,
                   ),
               ]
-            )],
+            ),
+            ElevatedButton(
+                onPressed: _submitOption,
+                child: Text('Submit'),
+              ),
+              SizedBox(height: 20),
+               if (_showResult)
+      Container(
+        width: 300,
+        height: 100,
+        color: Colors.cyan,
+        child: Center(
+          child: Text(
+            'Total Distance(KM): $_result',
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+      ),
+            ],
             
         ),
       ),
