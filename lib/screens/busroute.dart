@@ -40,6 +40,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
   String _selectedOption = 'Placid';
   String _selectedOption1 = 'Placid';
    double _result = 0.0;
+   double _finalresult = 0.0;
    bool _showResult = false;
   List<DropdownMenuItem<String>> _dropdownItems = [];
   List<DropdownMenuItem<String>> _dropdownItems1 = [];
@@ -84,17 +85,19 @@ class _BusroutescreenState extends State<Busroutescreen>  {
 
   if (snapshot.exists) {
     final Map<String, dynamic> mapFields = snapshot.data()!['km'];
-
+    final double priceperkm =
+        double.tryParse(snapshot.data()!['priceperkm']) ?? 0.0;
     final double valueA = double.tryParse(mapFields[_selectedOption])  ?? 0.0;
     final double valueB = double.tryParse(mapFields[_selectedOption1])  ?? 0.0;
     double result = valueA - valueB;
     if(result<0){
       result=result*-1;
     }
-
+    final double finalResult = result * priceperkm;
     setState(() 
     {
         _result = result;
+         _finalresult = finalResult;
         _showResult = true;
       });
     } else {
@@ -165,6 +168,20 @@ class _BusroutescreenState extends State<Busroutescreen>  {
           ),
         ),
       ),
+       if (_showResult)
+      Container(
+        width: 300,
+        height: 100,
+        color: Colors.yellowAccent,
+        child: Center(
+          child: Text(
+            'Amount: $_finalresult',
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+      ),
+       if (_showResult)
+      ElevatedButton(onPressed: (){}, child: Text("PAY")),
             ],
             
         ),
