@@ -107,3 +107,161 @@ class Bust
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+class _BusroutescreenState extends State<Busroutescreen> {
+  String field1 = '';
+  //String documentId='KL33N9599';
+  String field2 = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDocumentFields(widget.documentId);
+  }
+
+  Future<void> fetchDocumentFields(String documentId) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('buses')
+          .doc(documentId)
+          .get();
+
+      if (snapshot.exists) {
+        // Document exists, you can access its fields
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+        // Access specific fields
+        setState(() {
+          field1 = data['BUSNO'];
+          field2 = data['BusName'];
+         
+        });
+      } else {
+        // Document does not exist
+        print('Document does not exist');
+      }
+    } catch (e) {
+      // Error occurred while fetching document
+      print('Error fetching document: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('BUS T'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('BUS no: $field1'),
+            Text('BUS NAME: $field2'),
+            Text(widget.documentId),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+class Busroutescreen extends StatefulWidget {
+  final String documentId;
+  
+  Busroutescreen({required this.documentId});
+
+  @override
+  
+  _BusroutescreenState createState() => _BusroutescreenState();
+}
+
+class _BusroutescreenState extends State<Busroutescreen> {
+  Future<Map<String, dynamic>> _fetchMapFields() async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+          .collection('buses')
+          .doc(widget.documentId)
+          .get();
+
+      if (snapshot.exists) {
+        final Map<String, dynamic> mapFields = snapshot.data()!['STOPS'];
+        return mapFields;
+      } else {
+        throw Exception('Document does not exist');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch document: $e');
+    }
+  }
+
+  int _selectedOption = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('BUS-'),
+        ),
+        body: Center(
+          child: FutureBuilder<Map<String, dynamic>>(
+            future: _fetchMapFields(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final mapFields = snapshot.data!;
+                final List<String> options = mapFields.values.cast<String>().toList();
+
+                return ListView.builder(
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Radio<int>(
+                        value: index,
+                        groupValue: _selectedOption,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedOption = value!;
+                          });
+                        },
+                      ),
+                      title: Text(options[index]),
+                    );
+                  },
+                );
+              } else {
+                return Text('No data found');
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+// Usage example
