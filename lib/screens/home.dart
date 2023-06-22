@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+//import 'package:flutter/src/widgets/framework.dart';
+//import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:permission_handler/permission_handler.dart';
 //import 'package:get/get.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'busroute.dart';
 
 
@@ -13,7 +13,7 @@ class Homescreen
  extends StatefulWidget {
    Homescreen
   ({super.key});
-
+   final String documentId='9567867353';
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
@@ -21,6 +21,32 @@ class Homescreen
 class _HomescreenState extends State<Homescreen> {
 String fname ='Martin';
 String result = "Hello World...!";
+String balance = '';
+  @override
+  void initState() {
+    super.initState();
+    fetchBalance();
+  }
+   Future<void> fetchBalance() async {
+  try {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.documentId)
+        .get();
+
+    if (snapshot.exists) {
+      setState(() {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        double bala = data['walletAmount'];
+        balance = bala.toString();
+      });
+    }
+  } catch (error) {
+    setState(() {
+      balance = 'Error retrieving balance';
+    });
+  }
+}
 
   Future _scanQR() async {
     try {
@@ -94,7 +120,7 @@ String result = "Hello World...!";
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [CircleAvatar(radius: 16,child: Icon(Icons.currency_rupee,color: Colors.white,),),
-                            Text(bal, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 2.0),),
+                            Text('$balance', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 2.0),),
                           ],
                         ),
 
