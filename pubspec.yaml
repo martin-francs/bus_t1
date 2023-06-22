@@ -41,6 +41,7 @@ dependencies:
   qrscan: ^0.3.3
   permission_handler:
   uuid: ^3.0.4
+  intl: ^0.17.0
  
 dev_dependencies:
   flutter_test:

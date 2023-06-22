@@ -221,7 +221,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         ),
       ),
        if (_showResult)
-      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, userId, _finalresult), child: Text("PAY")),
+      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, userId, _finalresult,_selectedOption,_selectedOption1), child: Text("PAY")),
             ],
             
         ),
