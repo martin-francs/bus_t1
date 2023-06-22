@@ -1,3 +1,4 @@
+import 'package:bus_t/screens/walletaddmoney.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter/src/widgets/framework.dart';
@@ -133,7 +134,8 @@ String balance = '';
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text("ADD MONEY", style: TextStyle(fontSize: 12, color: Colors.blue[100], fontWeight: FontWeight.w700, letterSpacing: 2.0),),
-                                IconButton(onPressed: (){}, icon: Icon(Icons.add_box),iconSize: 28,color: Colors.white,)
+                                IconButton(onPressed: (){ Navigator.push(context,MaterialPageRoute(builder: (context) => addmoney()),
+            );}, icon: Icon(Icons.add_box),iconSize: 28,color: Colors.white,)
                                 //Text("Maaz Aftab", style: TextStyle(fontSize: 16, color: Colors.grey[100], fontWeight: FontWeight.w700, letterSpacing: 2.0),),
                               ],
                             ),
