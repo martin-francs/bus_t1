@@ -5,6 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'busroute.dart';
+import 'ticketshisory.dart';
 
 class Homescreen extends StatefulWidget {
   Homescreen({Key? key}) : super(key: key);
@@ -150,13 +151,52 @@ class _HomescreenState extends State<Homescreen> {
                 );
               },
             ),
+            SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TicketHistoryScreen(
+                      documentId: widget.documentId,
+                    ),
+                  ),
+                );
+              },
+              
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 32),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.blue, // Replace with your desired color
+                ),
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Ticket History",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Icon(
+                      Icons.history_outlined,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),
         onPressed: () {
-          _scanQR(); // calling a function when user click on button
+          _scanQR();
         },
         label: Text("Scan"),
       ),
@@ -170,7 +210,7 @@ class _HomescreenState extends State<Homescreen> {
       if (cameraStatus.isGranted) {
         String? cameraScanResult = await scanner.scan();
         setState(() {
-          result = cameraScanResult!; // setting string result with cameraScanResult
+          result = cameraScanResult!;
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (ctx) {
@@ -184,7 +224,7 @@ class _HomescreenState extends State<Homescreen> {
         if (isGranted.isGranted) {
           String? cameraScanResult = await scanner.scan();
           setState(() {
-            result = cameraScanResult!; // setting string result with cameraScanResult
+            result = cameraScanResult!;
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (ctx) {
