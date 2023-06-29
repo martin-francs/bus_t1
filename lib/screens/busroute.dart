@@ -64,7 +64,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     final List<String> options = mapFields.values.cast<String>().toList();
     final List<String> options1 = mapFields.values.cast<String>().toList();
     _selectedOption=options.first;
-    _selectedOption1=options1.first;
+    _selectedOption1=options1[1];
     final List<DropdownMenuItem<String>> items = options
         .map<DropdownMenuItem<String>>((value) => DropdownMenuItem<String>(
               value: value,
@@ -222,7 +222,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         ),
       ),
        if (_showResult)
-      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, userId, _finalresult,_selectedOption,_selectedOption1), child: Text("PAY")),
+      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: Text("PAY")),
             ],
             
         ),
@@ -243,7 +243,3 @@ class PaymentSuccessPage extends StatelessWidget {
     );
   }
 }
-
-
-
-// Usage example

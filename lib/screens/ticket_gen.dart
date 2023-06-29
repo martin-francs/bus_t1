@@ -1,86 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart'; // Import the intl package for DateFormat
-
-class BusTicketScreen extends StatelessWidget {
-  final String documentId;
-  final String start;
-  final String destination;
-  final double charge;
-  //final int seatNumber;
-
-  BusTicketScreen({
-    required this.documentId,
-    required this.start,
-    required this.destination,
-    required this.charge
-    //required this.seatNumber,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bus Ticket'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            generateTicket(context);
-          },
-          child: Text('Generate Ticket'),
-        ),
-      ),
-    );
-  }
-
-  void generateTicket(BuildContext context) async {
-    try {
-      CollectionReference parentCollection =
-          FirebaseFirestore.instance.collection('users');
-
-      DocumentReference documentRef =
-          parentCollection.doc(documentId);
-
-      CollectionReference ticketsCollection =
-          documentRef.collection('tickets');
-
-      // Create a new ticket document in the subcollection
-      final newTicketRef = await ticketsCollection.add({
-        'start': start,
-        'destination': destination,
-        //'seatNumber': seatNumber,
-        'bookingDateTime': DateTime.now(),
-        'ticketcharge':charge
-      });
-
-      // Navigate to the ticket details screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TicketDetailsScreen(ticketRef: newTicketRef),
-        ),
-      );
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to generate ticket. Please try again.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-}
-
 class TicketDetailsScreen extends StatelessWidget {
   final DocumentReference ticketRef;
 
@@ -107,6 +27,16 @@ class TicketDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   'Ticket ID: ${snapshot.data!.id}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                 SizedBox(height: 10),
+                Text(
+                  'Bus-No: ${ticketData['busno']}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                 SizedBox(height: 10),
+                Text(
+                  'Bus-Name: ${ticketData['busname']}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
