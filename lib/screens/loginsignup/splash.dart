@@ -5,11 +5,11 @@ import 'dart:ffi';
 //import 'package:busti007/screens/login_conductor.dart';
 //import 'package:busti007/screens/welcome.dart';
 import 'package:bus_t/screens/loginsignup/welcome.dart';
+import 'package:bus_t/screens/passsenger/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'homescreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -58,13 +58,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkUserLoggedin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? documentId = prefs.getString('documentId');
+    final String? documentId = prefs.getString('mobileNumber');
 
     if (documentId == null) {
       gotoLogin();
     } else {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx1) => HomePage()),);
+        MaterialPageRoute(builder: (ctx1) => Homescreen()),);
     }
   }
 }

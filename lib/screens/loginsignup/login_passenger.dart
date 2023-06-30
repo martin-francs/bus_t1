@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../passsenger/home.dart';
-import 'homescreen.dart';
 
 class LoginScreen1 extends StatelessWidget {
   LoginScreen1({Key? key}) : super(key: key);

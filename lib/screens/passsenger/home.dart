@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../loginsignup/welcome.dart';
 import 'busroute.dart';
 import 'ticketshisory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +44,17 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+             signout(context);
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -256,5 +268,14 @@ class _HomescreenState extends State<Homescreen> {
     } on PlatformException catch (e) {
       print(e);
     }
+  }
+  
+ signout(BuildContext ctx) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.of(ctx).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (ctx1) => WelcomeScreen()),
+      (route) => false,
+    );
   }
 }
