@@ -22,7 +22,7 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  String fname = 'Martin';
+  String fname = '';
   String result = "Hello World...!";
   late String documentId;
 
@@ -33,13 +33,25 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<void> _retrieveDocumentId() async {
-    String? mobileNumber = await widget._getDocumentIdFromSharedPreferences();
-    if (mobileNumber != null) {
-      setState(() {
-        documentId = mobileNumber;
-      });
-    }
+  String? mobileNumber = await widget._getDocumentIdFromSharedPreferences();
+  if (mobileNumber != null) {
+    setState(() {
+      documentId = mobileNumber;
+    });
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(documentId)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          fname = snapshot.data()?['Name'] ?? '';
+        });
+      }
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
