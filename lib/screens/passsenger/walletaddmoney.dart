@@ -5,10 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class addmoney extends StatefulWidget {
+  final String documentId;
+
+  addmoney({required this.documentId});
   @override
   _addmoneyState createState() => _addmoneyState();
 }
-String documentId='9567867353';
+
 class _addmoneyState extends State<addmoney> {
   TextEditingController _amountController = TextEditingController();
   String _displayedAmount = '';
@@ -21,7 +24,7 @@ class _addmoneyState extends State<addmoney> {
     // Update Firestore document
     FirebaseFirestore.instance
         .collection('users') 
-        .doc(documentId) 
+        .doc(widget.documentId) 
         .update({'walletAmount': FieldValue.increment(paidAmount)})
         .then((value) {
       // Firestore update successful
@@ -120,7 +123,7 @@ void dispose() {
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
-                  .doc(documentId) 
+                  .doc(widget.documentId) 
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {

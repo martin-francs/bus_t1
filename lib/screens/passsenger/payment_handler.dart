@@ -1,4 +1,4 @@
-import 'package:bus_t/screens/ticket_gen.dart';
+import 'package:bus_t/screens/passsenger/ticket_gen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'busroute.dart';
@@ -24,7 +24,7 @@ class PaymentHandler {
         String ticketCode = Uuid().v4().substring(0, 3).toUpperCase();
 
         // Create the document ID using the unique combination
-        String ticketId = '$busnoLast4-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
+        String ticketId = '$busno-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
 
         // Create a new ticket document in the subcollection
         final newTicketRef = ticketsCollection.doc(ticketId);

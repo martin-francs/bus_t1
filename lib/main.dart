@@ -1,4 +1,5 @@
-import 'package:bus_t/screens/home.dart';
+import 'package:bus_t/screens/loginsignup/splash.dart';
+import 'package:bus_t/screens/passsenger/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +21,7 @@ class Bust
   Widget build(BuildContext context) {
     return  GetMaterialApp(
       theme:ThemeData(primaryColor: Colors.indigo),
-      home:Homescreen(),
+      home: SplashScreen(),
     );
   }
 }

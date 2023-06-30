@@ -7,8 +7,8 @@ import 'payment_handler.dart';
 
 class Busroutescreen extends StatefulWidget {
   final String documentId;
-  
-  Busroutescreen({required this.documentId});
+   final String userId;
+  Busroutescreen({required this.documentId,required this.userId});
 
   @override
   
@@ -18,7 +18,7 @@ class Busroutescreen extends StatefulWidget {
 class _BusroutescreenState extends State<Busroutescreen>  {
 
   String field1 = '';
-  String userId='9567867353';
+  //String userId='9567867353';
   //String documentId='KL33N9599';
   String field2 = '';
   
@@ -222,7 +222,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         ),
       ),
        if (_showResult)
-      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: Text("PAY")),
+      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, widget.userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: Text("PAY")),
             ],
             
         ),

@@ -1,4 +1,4 @@
-import 'package:bus_t/screens/walletaddmoney.dart';
+import 'package:bus_t/screens/passsenger/walletaddmoney.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -6,19 +6,39 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'busroute.dart';
 import 'ticketshisory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homescreen extends StatefulWidget {
   Homescreen({Key? key}) : super(key: key);
 
-  final String documentId = '9567867353';
-
   @override
   _HomescreenState createState() => _HomescreenState();
+
+  Future<String?> _getDocumentIdFromSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('mobileNumber');
+  }
 }
 
 class _HomescreenState extends State<Homescreen> {
   String fname = 'Martin';
   String result = "Hello World...!";
+  late String documentId;
+
+  @override
+  void initState() {
+    super.initState();
+    _retrieveDocumentId();
+  }
+
+  Future<void> _retrieveDocumentId() async {
+    String? mobileNumber = await widget._getDocumentIdFromSharedPreferences();
+    if (mobileNumber != null) {
+      setState(() {
+        documentId = mobileNumber;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +64,7 @@ class _HomescreenState extends State<Homescreen> {
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
-                  .doc(widget.documentId)
+                  .doc(documentId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -55,8 +75,7 @@ class _HomescreenState extends State<Homescreen> {
                   return CircularProgressIndicator();
                 }
 
-                double balance =
-                    snapshot.data?['walletAmount'] ?? 0.0;
+                double balance = snapshot.data?['walletAmount'] ?? 0.0;
 
                 return Container(
                   margin: EdgeInsets.symmetric(horizontal: 32),
@@ -134,7 +153,7 @@ class _HomescreenState extends State<Homescreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => addmoney(),
+                                      builder: (context) => addmoney(documentId: documentId),
                                     ),
                                   );
                                 },
@@ -158,12 +177,11 @@ class _HomescreenState extends State<Homescreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => TicketHistoryScreen(
-                      documentId: widget.documentId,
+                      documentId: documentId,
                     ),
                   ),
                 );
               },
-              
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 32),
                 decoration: BoxDecoration(
@@ -214,7 +232,7 @@ class _HomescreenState extends State<Homescreen> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (ctx) {
-                return Busroutescreen(documentId: result);
+                return Busroutescreen(documentId: result,userId: documentId);
               },
             ),
           );
@@ -228,7 +246,7 @@ class _HomescreenState extends State<Homescreen> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (ctx) {
-                  return Busroutescreen(documentId: result);
+                  return Busroutescreen(documentId: result,userId: documentId,);
                 },
               ),
             );
