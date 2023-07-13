@@ -1,3 +1,4 @@
+import 'package:bus_t/screens/conductor/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,11 +44,13 @@ class _activeoffscreenState extends State<activeoffscreen> {
       DocumentReference busDocument =
           firestore.collection('buses').doc(busno);
       await busDocument.update({'activeroute': null});
+      await busDocument.update({'activeticket': null});
     }
     
-    // Clear activeRoute value in shared preferences
+    // Clear activeRoute and time value in shared preferences
     await prefs.setString('activeRoute', '');
-
+    await prefs.setString('time', '');
+    printSharedPreferences();
     // Navigate back to the previous screen or perform any other action
     Navigator.pop(context);
   }

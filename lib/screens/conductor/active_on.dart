@@ -65,40 +65,59 @@ class _activeonscreenState extends State<activeonscreen> {
   }
 
   Future<void> saveActiveRoute(String routeId) async {
-    if (widget.busno != null) {
-      CollectionReference busesCollection =
-          FirebaseFirestore.instance.collection('buses');
-      DocumentReference busDocument = busesCollection.doc(widget.busno);
-      await busDocument.update({'activeroute': routeId});
-      print('Active route saved: $routeId');
+  if (widget.busno != null) {
+     // Save the timestamp in shared preferences
+    DateTime now = DateTime.now();
+    String timestamp = now.toIso8601String();
+  
+    CollectionReference busesCollection =
+        FirebaseFirestore.instance.collection('buses');
+    DocumentReference busDocument = busesCollection.doc(widget.busno);
+    await busDocument.update({'activeroute': routeId});
+    await busDocument.update({'activeticket': timestamp});
+    print('Active route saved: $routeId');
 
-      // Save the active route in shared preferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('activeRoute', routeId);
-      printSharedPreferences();
-      // Show success dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Activation Status'),
-            content: Text('Route activated successfully!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Dismiss dialog
-                  navigateToHomeScreen(); // Navigate to home screen
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    // Save the active route in shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('time', timestamp);
+    
+
+
+    // DateTime now = DateTime.now();
+    // String timestamp = now.toIso8601String();
+    // await prefs.setString('time', timestamp);
+
+    // Create a collection with the collection ID as timestamp
+    // and a document with the document ID as 'dummyticket' in the tickets collection
+    CollectionReference ticketsCollection =
+        FirebaseFirestore.instance.collection('tickets');
+    DocumentReference ticketDocument =
+        ticketsCollection.doc(widget.busno).collection(timestamp).doc('dummyticket');
+    await ticketDocument.set({'routeId': routeId});
+    // Save the timestamp in shared preferences
+    await prefs.setString('activeRoute', routeId);
+    printSharedPreferences();
+    // Show success dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Activation Status'),
+          content: Text('Route activated successfully!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss dialog
+                navigateToHomeScreen(); // Navigate to home screen
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
-
-  void navigateToHomeScreen() {
+}void navigateToHomeScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -107,5 +126,3 @@ class _activeonscreenState extends State<activeonscreen> {
     );
   }
 }
-
-
