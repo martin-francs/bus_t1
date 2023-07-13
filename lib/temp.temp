@@ -265,3 +265,134 @@ class _BusroutescreenState extends State<Busroutescreen> {
   }
 }
 // Usage example
+
+
+
+
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+class LiveTicketsPage extends StatefulWidget {
+  final String? busno;
+
+  const LiveTicketsPage({Key? key, required this.busno}) : super(key: key);
+
+  @override
+  _LiveTicketsPageState createState() => _LiveTicketsPageState();
+}
+
+class _LiveTicketsPageState extends State<LiveTicketsPage> {
+  late List<String> routeDocumentIds;
+  late String selectedRouteId;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRouteId = '';
+    _fetchRouteDocumentIds();
+  }
+
+  Future<void> _fetchRouteDocumentIds() async {
+    final routesSnapshot = await FirebaseFirestore.instance
+        .collection('buses')
+        .doc(widget.busno)
+        .collection('routes')
+        .get();
+
+    setState(() {
+      routeDocumentIds = routesSnapshot.docs.map((doc) => doc.id).toList();
+    });
+  }
+
+  Future<void> _activateRoute() async {
+    if (selectedRouteId.isNotEmpty) {
+      try {
+        final busRef = FirebaseFirestore.instance
+            .collection('buses')
+            .doc(widget.busno);
+
+        await busRef.update({'activeroute': selectedRouteId});
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Success'),
+            content: Text('Route activated successfully.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      } catch (error) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to activate route. Please try again.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please select a route.'),
+          actions: [
+            TextButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ACTIVATE ROUTE'),
+      ),
+      body: Center(
+        child: routeDocumentIds != null
+            ? Column(
+                children: [
+                  Text('Bus No: ${widget.busno}'),
+                  SizedBox(height: 20),
+                  ...routeDocumentIds.map(
+                    (routeId) => RadioListTile<String>(
+                      title: Text(routeId),
+                      value: routeId,
+                      groupValue: selectedRouteId,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedRouteId = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    child: Text('Activate'),
+                    onPressed: _activateRoute,
+                  ),
+                ],
+              )
+            : CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
