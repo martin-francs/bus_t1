@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../conductor/c_home.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -55,16 +57,24 @@ class _SplashScreenState extends State<SplashScreen> {
       );
   }
 
-
   Future<void> checkUserLoggedin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? documentId = prefs.getString('mobileNumber');
-
-    if (documentId == null) {
+    final String? busno = prefs.getString('busno');
+    if (documentId == null && busno == null) {
       gotoLogin();
-    } else {
+    } 
+    // else if(busno == null){
+    //    gotoLogin();
+    // }
+    else if(documentId != null){
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (ctx1) => Homescreen()),);
+    }
+    else
+    {
+       Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (ctx1) => ConductorHomePage()),);
     }
   }
 }
