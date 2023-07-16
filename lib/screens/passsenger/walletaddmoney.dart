@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,14 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class addmoney extends StatefulWidget {
   final String documentId;
 
-  addmoney({required this.documentId});
+  const addmoney({super.key, required this.documentId});
   @override
   _addmoneyState createState() => _addmoneyState();
 }
 
 class _addmoneyState extends State<addmoney> {
-  TextEditingController _amountController = TextEditingController();
-  String _displayedAmount = '';
+  final TextEditingController _amountController = TextEditingController();
+  final String _displayedAmount = '';
   Razorpay? _razorpay;
 
   void _handlePaymentSucess(PaymentSuccessResponse response) {
@@ -94,7 +93,7 @@ void dispose() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADD TO WALLET'),
+        title: const Text('ADD TO WALLET'),
       ),
       body: Center(
         child: Column(
@@ -104,7 +103,7 @@ void dispose() {
               'Enter Amount to Pay:',
             ),
             const SizedBox(height: 10),
-            Container(
+            SizedBox(
               width: 200,
               child: TextField(
                 controller: _amountController,
@@ -114,7 +113,7 @@ void dispose() {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: makePayment,
               child: const Text('Add to wallet'),
@@ -127,18 +126,18 @@ void dispose() {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Error fetching wallet amount');
+                  return const Text('Error fetching wallet amount');
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 double walletAmount = snapshot.data?['walletAmount'] ?? 0.0;
 
                 return Column(
                   children: [
-                    Text(
+                    const Text(
                       'Wallet',
                       style: TextStyle(
                         fontSize: 20,
@@ -147,7 +146,7 @@ void dispose() {
                     ),
                     Text(
                       walletAmount.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),

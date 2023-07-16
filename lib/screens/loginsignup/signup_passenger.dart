@@ -12,6 +12,8 @@ class SignUpPassenger extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
+  SignUpPassenger({super.key});
+
   @override
   Widget build(BuildContext context) {
     String userId;

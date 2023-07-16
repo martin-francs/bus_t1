@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class activeoffscreen extends StatefulWidget {
+  const activeoffscreen({super.key});
+
   @override
   _activeoffscreenState createState() => _activeoffscreenState();
 }
@@ -59,7 +61,7 @@ class _activeoffscreenState extends State<activeoffscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('DEACTIVATE ROUTE'),
+        title: const Text('DEACTIVATE ROUTE'),
       ),
       body: Center(
         child: Column(
@@ -67,20 +69,20 @@ class _activeoffscreenState extends State<activeoffscreen> {
           children: [
             Text(
               'Active Route: ${activeRoute ?? ''}',
-              style: TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 24),
             ),
-            SizedBox(height: 20),
-            Icon(
+            const SizedBox(height: 20),
+            const Icon(
               Icons.power_off,
               size: 100,
               color: Colors.red,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 _deactivateRoute();
               },
-              child: Text(
+              child: const Text(
                 'Deactivate',
                 style: TextStyle(fontSize: 24),
               ),

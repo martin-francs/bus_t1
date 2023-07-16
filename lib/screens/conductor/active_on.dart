@@ -23,11 +23,11 @@ class _activeonscreenState extends State<activeonscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ACTIVATE ROUTE'),
+        title: const Text('ACTIVATE ROUTE'),
       ),
       body: Center(
         child: widget.routeIds.isEmpty
-            ? Text('No routes to show')
+            ? const Text('No routes to show')
             : Column(
                 children: [
                   Expanded(
@@ -56,7 +56,7 @@ class _activeonscreenState extends State<activeonscreen> {
                         print('Please select a route');
                       }
                     },
-                    child: Text('Activate'),
+                    child: const Text('Activate'),
                   ),
                 ],
               ),
@@ -102,15 +102,15 @@ class _activeonscreenState extends State<activeonscreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Activation Status'),
-          content: Text('Route activated successfully!'),
+          title: const Text('Activation Status'),
+          content: const Text('Route activated successfully!'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Dismiss dialog
                 navigateToHomeScreen(); // Navigate to home screen
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -121,7 +121,7 @@ class _activeonscreenState extends State<activeonscreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ConductorHomePage(busID: '',),
+        builder: (context) => const ConductorHomePage(busID: '',),
       ),
     );
   }

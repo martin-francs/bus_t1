@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 
 import 'payment_handler.dart';
@@ -8,7 +7,7 @@ import 'payment_handler.dart';
 class Busroutescreen extends StatefulWidget {
   final String documentId;
    final String userId;
-  Busroutescreen({required this.documentId,required this.userId});
+  const Busroutescreen({super.key, required this.documentId,required this.userId});
 
   @override
   
@@ -89,10 +88,10 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     {
       showDialog(context:(context), builder: (ctx)
     {
-        return AlertDialog(title: Text('Error'),
-        content:Text('Select different destination'),
+        return AlertDialog(title: const Text('Error'),
+        content:const Text('Select different destination'),
         actions: [
-          TextButton(onPressed: (){Navigator.of(ctx).pop();}, child: Text('close'))
+          TextButton(onPressed: (){Navigator.of(ctx).pop();}, child: const Text('close'))
           ]);
       });  }
     else{
@@ -136,15 +135,15 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         ),
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text('BUS no: $field1'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
-                Text("Starting Location"),
-                SizedBox(width: 50),
+                const Text("Starting Location"),
+                const SizedBox(width: 50),
                 _dropdownItems.isEmpty
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : DropdownButton<String>(
                     value: _selectedOption,
                     onChanged: (newValue) {
@@ -159,10 +158,10 @@ class _BusroutescreenState extends State<Busroutescreen>  {
             
           Row(
               children: [
-                Text("Ending Location"),
-                SizedBox(width: 50),
+                const Text("Ending Location"),
+                const SizedBox(width: 50),
                 _dropdownItems1.isEmpty
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : DropdownButton<String>(
                     value: _selectedOption1,
                     onChanged: (newValue) {
@@ -176,9 +175,9 @@ class _BusroutescreenState extends State<Busroutescreen>  {
             ),
             ElevatedButton(
                 onPressed: () => _submitOption(context),
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
                if (_showResult)
       Container(
         height: 100,
@@ -188,18 +187,18 @@ class _BusroutescreenState extends State<Busroutescreen>  {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(50,0,10,10),
                     child: Text('$start-->$end',
-                      style: TextStyle(fontSize: 18),),
+                      style: const TextStyle(fontSize: 18),),
                   ),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(40,0,0,0),
                       child: Text(
                         'Total Distance(KM): $_result',
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ),
@@ -217,12 +216,12 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         child: Center(
           child: Text(
             'Amount: $_finalresult',
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
         ),
       ),
        if (_showResult)
-      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, widget.userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: Text("PAY")),
+      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, widget.userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: const Text("PAY")),
             ],
             
         ),
@@ -231,6 +230,8 @@ class _BusroutescreenState extends State<Busroutescreen>  {
   }
 }
 class PaymentSuccessPage extends StatelessWidget {
+  const PaymentSuccessPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

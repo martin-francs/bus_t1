@@ -1,7 +1,6 @@
 import 'package:bus_t/screens/passsenger/ticket_gen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'busroute.dart';
 import 'payment_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,7 +20,7 @@ class PaymentHandler {
         String busnoLast4 = busno.substring(busno.length - 4);
 
         // Generate a unique 3-digit alphanumeric code
-        String ticketCode = Uuid().v4().substring(0, 3).toUpperCase();
+        String ticketCode = const Uuid().v4().substring(0, 3).toUpperCase();
 
         // Create the document ID using the unique combination
         String ticketId = '$busno-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
@@ -50,12 +49,12 @@ class PaymentHandler {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Error'),
-              content: Text('Failed to generate ticket. Please try again.'),
+              title: const Text('Error'),
+              content: const Text('Failed to generate ticket. Please try again.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -68,14 +67,14 @@ class PaymentHandler {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Payment Failed'),
-            content: Text('Payment failed or insufficient funds.'),
+            title: const Text('Payment Failed'),
+            content: const Text('Payment failed or insufficient funds.'),
             actions: [
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

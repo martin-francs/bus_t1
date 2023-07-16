@@ -8,18 +8,18 @@ import 'routes_management.dart';
 class AddRoutePage extends StatefulWidget {
   final String busID;
 
-  AddRoutePage({required this.busID});
+  const AddRoutePage({super.key, required this.busID});
 
   @override
   _AddRoutePageState createState() => _AddRoutePageState();
 }
 
 class _AddRoutePageState extends State<AddRoutePage> {
-  TextEditingController _routeNameController = TextEditingController();
-  TextEditingController _pricePerKmController = TextEditingController();
-  TextEditingController _startRouteController = TextEditingController(text: '0');
-  TextEditingController _stopNameController = TextEditingController();
-  TextEditingController _stopDistanceController = TextEditingController();
+  final TextEditingController _routeNameController = TextEditingController();
+  final TextEditingController _pricePerKmController = TextEditingController();
+  final TextEditingController _startRouteController = TextEditingController(text: '0');
+  final TextEditingController _stopNameController = TextEditingController();
+  final TextEditingController _stopDistanceController = TextEditingController();
   List<Map<String, dynamic>> stops = [];
   bool _isEditing = true;
   bool _isFirstSaveVisible = true;
@@ -103,8 +103,8 @@ void _saveRouteAgain() async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Success'),
-          content: Text('Route added successfully.'),
+          title: const Text('Success'),
+          content: const Text('Route added successfully.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -116,7 +116,7 @@ void _saveRouteAgain() async {
                   ),
                 );
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -144,31 +144,31 @@ void _saveRouteAgain() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Route'),
+        title: const Text('Add Route'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
                 controller: _routeNameController,
                 enabled: _isEditing,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Route Name',
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextField(
                 controller: _pricePerKmController,
                 enabled: _isEditing,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Price per KM',
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (!_isEditing)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,16 +176,16 @@ void _saveRouteAgain() async {
                     TextField(
                       controller: _startRouteController,
                       enabled: !_isEditing,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Start Route',
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Stops:',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Column(
                       children: stops.map((stop) {
                         return Row(
@@ -193,28 +193,28 @@ void _saveRouteAgain() async {
                             Expanded(
                               child: Text('${stop['name']}'),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text('Distance: ${stop['distance']} km'),
                           ],
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: _stopNameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'New Stop Name',
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: TextField(
                             controller: _stopDistanceController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Distance from Start (km)',
                             ),
                             keyboardType: TextInputType.number,
@@ -222,25 +222,25 @@ void _saveRouteAgain() async {
                         ),
                         IconButton(
                           onPressed: _addStop,
-                          icon: Icon(Icons.add),
+                          icon: const Icon(Icons.add),
                         ),
                       ],
                     ),
                   ],
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Visibility(
                 visible: _isFirstSaveVisible,
                 child: ElevatedButton(
                   onPressed: _saveRoute,
-                  child: Text('Save'),
+                  child: const Text('Save'),
                 ),
               ),
               Visibility(
                 visible: _isSecondSaveVisible,
                 child: ElevatedButton(
                   onPressed: _saveRouteAgain,
-                  child: Text('Save Again'),
+                  child: const Text('Save Again'),
                 ),
               ),
             ],

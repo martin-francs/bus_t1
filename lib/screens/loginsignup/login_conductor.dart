@@ -11,9 +11,13 @@ import '../conductor/c_home.dart';
 class LoginScreen2 extends StatelessWidget {
   final TextEditingController busIDController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  LoginScreen2({super.key});
   Future<void> _storeDocumentIdInSharedPreferences(String documentId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('busno', documentId);
+     await prefs.setString('activeRoute', '');
+    await prefs.setString('time', '');
   }
   void login(BuildContext context) async {
     try {
@@ -28,7 +32,7 @@ class LoginScreen2 extends StatelessWidget {
 
       if (querySnapshot.docs.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Invalid bus ID or password'),
           ),
         );
@@ -42,7 +46,7 @@ class LoginScreen2 extends StatelessWidget {
       String storedPassword = documentSnapshot.get('password');
       if (password != storedPassword) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Invalid bus ID or password'),
           ),
         );
@@ -70,7 +74,7 @@ class LoginScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Conductor Login'),
+        title: const Text('Conductor Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -78,28 +82,28 @@ class LoginScreen2 extends StatelessWidget {
           children: [
             TextField(
               controller: busIDController,
-              decoration: InputDecoration(labelText: 'Bus ID'),
+              decoration: const InputDecoration(labelText: 'Bus ID'),
             ),
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             ElevatedButton(
               onPressed: () {
                 login(context);
               },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpConductor()),
+                  MaterialPageRoute(builder: (context) => const SignUpConductor()),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Don\'t have an account? Sign up',
                 style: TextStyle(
                   color: Colors.blue,

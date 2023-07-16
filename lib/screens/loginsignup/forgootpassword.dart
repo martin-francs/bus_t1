@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   final _emailController = TextEditingController();
 
+  ForgotPasswordScreen({super.key});
+
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
@@ -36,7 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: const Text('Forgot Password'),
       ),
       body: SafeArea(
         child: Padding(
@@ -46,7 +48,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               const SizedBox(
                 height: 150,
               ),
-              Text(
+              const Text(
                 'Enter your email to reset your password.',
                 style: TextStyle(
                   fontSize: 16,

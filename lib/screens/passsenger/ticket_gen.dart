@@ -4,17 +4,18 @@ import 'package:intl/intl.dart'; // Import the intl package for DateFormat
 class TicketDetailsScreen extends StatelessWidget {
   final DocumentReference ticketRef;
 
-  TicketDetailsScreen({required this.ticketRef});
+  const TicketDetailsScreen({super.key, required this.ticketRef});
 
   String formatDate(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ticket Details'),
+        title: const Text('Ticket Details'),
       ),
       body: StreamBuilder(
         stream: ticketRef.snapshots(),
@@ -27,51 +28,51 @@ class TicketDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   'Ticket ID: ${snapshot.data!.id}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                 SizedBox(height: 10),
+                 const SizedBox(height: 10),
                 Text(
                   'Bus-No: ${ticketData['busno']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                 SizedBox(height: 10),
+                 const SizedBox(height: 10),
                 Text(
                   'Bus-Name: ${ticketData['busname']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'Start: ${ticketData['start']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'Destination: ${ticketData['destination']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
 /*                SizedBox(height: 10),
                 Text(
                   'Seat Number: ${ticketData['seatNumber']}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),*/
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'Booking Date and Time: ${formatDate(bookingDateTime)}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   
                 ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 Text(
                   'Ticket charge: ${ticketData['ticketcharge']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 
               ],
             );
           } else if (snapshot.hasError) {
-            return Text('Failed to load ticket.');
+            return const Text('Failed to load ticket.');
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),

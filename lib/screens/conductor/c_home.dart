@@ -24,16 +24,16 @@ Future<List<String>> fetchRouteIds(String? busno) async {
         .doc(busno)
         .collection('routes')
         .get();
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       routeIds.add(doc.id);
-    });
+    }
   }
   return routeIds;
 }
 class ConductorHomePage extends StatefulWidget {
   final String busID;
 
-  ConductorHomePage({required this.busID});
+  const ConductorHomePage({super.key, required this.busID});
 Future<String?> _getDocumentIdFromSharedPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('busno');
@@ -110,14 +110,14 @@ void downloadQRCodeAsPDF() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Conductor Home'),
+        title: const Text('Conductor Home'),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.orange,
               ),
               child: Align(
@@ -135,15 +135,15 @@ void downloadQRCodeAsPDF() async {
                       ),
                     ElevatedButton(
                       onPressed: downloadQRCodeAsPDF,
-                      child: Text('Download QR as PDF'),
+                      child: const Text('Download QR as PDF'),
                     ),
                   ],
                 ),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: () {
                   signout1(context);
               },
@@ -159,19 +159,9 @@ void downloadQRCodeAsPDF() async {
               onPressed: () {
                 //////////////////////
               },
-              child: Text('Live Tickets'),
+              child: const Text('Live Tickets'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WelcomeScreen(),
-                  ),
-                );
-              },
-              child: Text('Logout'),
-            ),
+
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -181,7 +171,7 @@ void downloadQRCodeAsPDF() async {
                   ),
                 );
               },
-              child: Text('Route Management'),
+              child: const Text('Route Management'),
             ),
           ],
         ),
@@ -198,7 +188,7 @@ void downloadQRCodeAsPDF() async {
               context,
               MaterialPageRoute(
                 builder: (context) =>
-                    activeoffscreen(),
+                    const activeoffscreen(),
               ),
             );
           } else {
@@ -213,7 +203,7 @@ void downloadQRCodeAsPDF() async {
             );
           }
         },
-        backgroundColor: Color.fromARGB(255, 18, 78, 217),
+        backgroundColor: const Color.fromARGB(255, 18, 78, 217),
         child: const Icon(Icons.power_settings_new_sharp),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -223,7 +213,7 @@ void downloadQRCodeAsPDF() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     Navigator.of(ctx).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (ctx1) => WelcomeScreen()),
+      MaterialPageRoute(builder: (ctx1) => const WelcomeScreen()),
       (route) => false,
     );
   }

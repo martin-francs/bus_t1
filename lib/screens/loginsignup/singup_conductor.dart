@@ -7,6 +7,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'login_conductor.dart';
 
 class SignUpConductor extends StatefulWidget {
+  const SignUpConductor({super.key});
+
   @override
   _SignUpConductorState createState() => _SignUpConductorState();
 }
@@ -21,7 +23,7 @@ class _SignUpConductorState extends State<SignUpConductor> {
   Future<void> generateAndUploadQRCode(String busID) async {
     try {
       // Generate the QR code data
-      String qrCodeData = '$busID';
+      String qrCodeData = busID;
 
       // Create a QR code image
       final qrCode = QrPainter(
@@ -95,6 +97,16 @@ class _SignUpConductorState extends State<SignUpConductor> {
         'busname': busname,
         'password': password,
       });
+      await FirebaseFirestore.instance.collection('buses').doc(busID).set({
+      'BusName': busname,
+      'BUSNO': busID,
+      'activeticket': null, // Set activeTicket to null
+      'activeroute': null,  // Set activeRoute to null
+    });
+    await FirebaseFirestore.instance.collection('tickets').doc(busID).set({
+      'BusName': busname,
+      'BUSNO': busID,
+    });
 
       // Generate and upload the QR code
       await generateAndUploadQRCode(busID);

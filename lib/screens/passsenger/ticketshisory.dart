@@ -6,7 +6,7 @@ import 'ticket_gen.dart';
 class TicketHistoryScreen extends StatefulWidget {
   final String documentId;
 
-  TicketHistoryScreen({required this.documentId});
+  const TicketHistoryScreen({super.key, required this.documentId});
 
   @override
   _TicketHistoryScreenState createState() => _TicketHistoryScreenState();
@@ -17,7 +17,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ticket History'),
+        title: const Text('Ticket History'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -27,19 +27,19 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text('Error fetching ticket history'),
             );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
           if (snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No tickets found'),
             );
           }

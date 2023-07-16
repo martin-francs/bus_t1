@@ -1,7 +1,6 @@
 import 'package:bus_t/screens/loginsignup/forgootpassword.dart';
 import 'package:bus_t/screens/loginsignup/signup_passenger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,7 +111,7 @@ class LoginScreen1 extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
+                child: const Text(
                   'Forgot Password?',
                   style: TextStyle(
                     color: Colors.blue,
@@ -138,7 +137,7 @@ class LoginScreen1 extends StatelessWidget {
                         _storeMobileNumberInSharedPreferences(mobileNumber);
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => Homescreen()),
+                          MaterialPageRoute(builder: (context) => const Homescreen()),
                         );
                       } else {
                         _showSnackBar(context, 'Mobile number not found.');

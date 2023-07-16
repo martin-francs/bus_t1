@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 //import 'package:busti007/main.dart';
 //import 'package:busti007/screens/homescreen.dart';
@@ -7,7 +6,6 @@ import 'dart:ffi';
 import 'package:bus_t/screens/loginsignup/welcome.dart';
 import 'package:bus_t/screens/passsenger/home.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../conductor/c_home.dart';
@@ -50,9 +48,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> gotoLogin() async{
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (ctx) => WelcomeScreen(),
+      MaterialPageRoute(builder: (ctx) => const WelcomeScreen(),
       ),
       );
   }
@@ -69,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // }
     else if(documentId != null){
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx1) => Homescreen()),);
+        MaterialPageRoute(builder: (ctx1) => const Homescreen()),);
     }
     else
     {

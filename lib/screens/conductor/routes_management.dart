@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RouteManagement extends StatefulWidget {
   final String busID;
 
-  RouteManagement({required this.busID});
+  const RouteManagement({super.key, required this.busID});
 
   @override
   _RouteManagementState createState() => _RouteManagementState();
@@ -24,11 +24,11 @@ class _RouteManagementState extends State<RouteManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Route Management'),
+        title: const Text('Route Management'),
         actions: [
           FloatingActionButton(
             onPressed: _addRoute,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ],
       ),
@@ -36,7 +36,7 @@ class _RouteManagementState extends State<RouteManagement> {
         future: _getRouteNameFromSharedPreferences(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -50,7 +50,7 @@ class _RouteManagementState extends State<RouteManagement> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
@@ -66,7 +66,7 @@ class _RouteManagementState extends State<RouteManagement> {
                       return ListTile(
                         title: Text(routeName),
                         trailing: IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () => _deleteRoute(routeId),
                         ),
                         onTap: () => _viewRouteDetails(routeName),
@@ -93,12 +93,12 @@ class _RouteManagementState extends State<RouteManagement> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Confirm Delete'),
-        content: Text('Are you sure you want to delete this route?'),
+        title: const Text('Confirm Delete'),
+        content: const Text('Are you sure you want to delete this route?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
@@ -110,7 +110,7 @@ class _RouteManagementState extends State<RouteManagement> {
                   .delete();
               Navigator.pop(context);
             },
-            child: Text('Delete'),
+            child: const Text('Delete'),
           ),
         ],
       ),

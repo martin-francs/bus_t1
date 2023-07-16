@@ -10,7 +10,7 @@ import 'ticketshisory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Homescreen extends StatefulWidget {
-  Homescreen({Key? key}) : super(key: key);
+  const Homescreen({Key? key}) : super(key: key);
 
   @override
   _HomescreenState createState() => _HomescreenState();
@@ -57,10 +57,10 @@ class _HomescreenState extends State<Homescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
              signout(context);
             },
@@ -71,18 +71,18 @@ class _HomescreenState extends State<Homescreen> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: Text(
                 '   Welcome,\n   $fname',
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             StreamBuilder<DocumentSnapshot>(
@@ -92,26 +92,26 @@ class _HomescreenState extends State<Homescreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Error fetching balance');
+                  return const Text('Error fetching balance');
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 double balance = snapshot.data?['walletAmount'] ?? 0.0;
 
                 return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 32),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.symmetric(horizontal: 32),
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Color.fromRGBO(35, 60, 103, 1),
                   ),
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
+                      const Row(
                         children: <Widget>[
                           CircleAvatar(
                             radius: 16,
@@ -132,13 +132,13 @@ class _HomescreenState extends State<Homescreen> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 16,
                             child: Icon(
                               Icons.currency_rupee,
@@ -147,7 +147,7 @@ class _HomescreenState extends State<Homescreen> {
                           ),
                           Text(
                             balance.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -155,7 +155,7 @@ class _HomescreenState extends State<Homescreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
                       Row(
@@ -181,7 +181,7 @@ class _HomescreenState extends State<Homescreen> {
                                     ),
                                   );
                                 },
-                                icon: Icon(Icons.add_box),
+                                icon: const Icon(Icons.add_box),
                                 iconSize: 28,
                                 color: Colors.white,
                               ),
@@ -194,7 +194,7 @@ class _HomescreenState extends State<Homescreen> {
                 );
               },
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -207,13 +207,13 @@ class _HomescreenState extends State<Homescreen> {
                 );
               },
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 32),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: Colors.blue, // Replace with your desired color
                 ),
-                padding: EdgeInsets.all(16),
-                child: Row(
+                padding: const EdgeInsets.all(16),
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
@@ -236,11 +236,11 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.camera_alt),
+        icon: const Icon(Icons.camera_alt),
         onPressed: () {
           _scanQR();
         },
-        label: Text("Scan"),
+        label: const Text("Scan"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -286,7 +286,7 @@ class _HomescreenState extends State<Homescreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     Navigator.of(ctx).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (ctx1) => WelcomeScreen()),
+      MaterialPageRoute(builder: (ctx1) => const WelcomeScreen()),
       (route) => false,
     );
   }
