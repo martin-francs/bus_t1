@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
     else
     {
        Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx1) => ConductorHomePage()),);
+        MaterialPageRoute(builder: (ctx1) => ConductorHomePage(busID: busno ??'',)),);
     }
   }
 }

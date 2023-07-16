@@ -121,7 +121,7 @@ class _activeonscreenState extends State<activeonscreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ConductorHomePage(),
+        builder: (context) => ConductorHomePage(busID: '',),
       ),
     );
   }

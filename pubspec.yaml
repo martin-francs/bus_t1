@@ -39,13 +39,20 @@ dependencies:
   get: ^4.6.5
   path: any
   qrscan: ^0.3.3
-  permission_handler:
+  permission_handler: ^10.4.3
   uuid: ^3.0.4
   intl: ^0.17.0
-  fluttertoast:
   razorpay_flutter:
   shared_preferences: ^2.1.2
   firebase_auth: ^4.6.3
+  firebase_storage: ^11.2.5
+  open_file: ^3.3.2
+  http: ^1.1.0
+  path_provider: ^2.0.15
+  pdf: ^3.10.4
+  qr: ^3.0.1
+  qr_flutter: ^4.1.0
+  barcode_image: ^2.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

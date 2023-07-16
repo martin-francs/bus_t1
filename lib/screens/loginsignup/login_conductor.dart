@@ -55,7 +55,7 @@ class LoginScreen2 extends StatelessWidget {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ConductorHomePage()),
+        MaterialPageRoute(builder: (context) => ConductorHomePage(busID: busno,)),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(

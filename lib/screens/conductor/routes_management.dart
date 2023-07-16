@@ -1,15 +1,126 @@
-import 'package:flutter/material.dart';
 
-class RouteManagementPage extends StatelessWidget {
+import 'package:bus_t/screens/conductor/route_adding.dart';
+import 'package:bus_t/screens/conductor/route_details.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class RouteManagement extends StatefulWidget {
+  final String busID;
+
+  RouteManagement({required this.busID});
+
+  @override
+  _RouteManagementState createState() => _RouteManagementState();
+}
+
+class _RouteManagementState extends State<RouteManagement> {
+  Future<String?> _getRouteNameFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('routeName');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Route Selection'),
+        title: Text('Route Management'),
+        actions: [
+          FloatingActionButton(
+            onPressed: _addRoute,
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
-      body: Center(
-        child: Text('Route Selection Page'),
+      body: FutureBuilder<String?>(
+        future: _getRouteNameFromSharedPreferences(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            String? routeName = snapshot.data;
+
+            return StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('buses')
+                  .doc(widget.busID)
+                  .collection('routes')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final routes = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    itemCount: routes.length,
+                    itemBuilder: (context, index) {
+                      final routeData = routes[index].data() as Map<String, dynamic>;
+                      final routeId = routes[index].id;
+                      final routeName = routeData['routeName'] as String? ?? 'Unknown Route';
+
+                      return ListTile(
+                        title: Text(routeName),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _deleteRoute(routeId),
+                        ),
+                        onTap: () => _viewRouteDetails(routeName),
+                      );
+                    },
+                  );
+                }
+              },
+            );
+          }
+        },
       ),
+    );
+  }
+
+  void _addRoute() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddRoutePage(busID: widget.busID)),
+    );
+  }
+
+  void _deleteRoute(String routeId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirm Delete'),
+        content: Text('Are you sure you want to delete this route?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              FirebaseFirestore.instance
+                  .collection('buses')
+                  .doc(widget.busID)
+                  .collection('routes')
+                  .doc(routeId)
+                  .delete();
+              Navigator.pop(context);
+            },
+            child: Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _viewRouteDetails(String routeName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RouteDetailsPage(routeName: routeName)),
     );
   }
 }
