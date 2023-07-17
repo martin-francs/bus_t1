@@ -12,6 +12,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'livetickets.dart';
+
 
 
 
@@ -44,11 +46,22 @@ Future<String?> _getDocumentIdFromSharedPreferences() async {
 
 class _ConductorHomePageState extends State<ConductorHomePage> {
   String qrCodeImageUrl = '';
-
+  String? documentId;
+  bool active = false;
+  String? collectionName;
   @override
   void initState() {
     super.initState();
-    loadQRCodeImage(); // Load the QR code image when the home page is initialized
+    loadQRCodeImage();
+     _loadSharedPrefs(); // Load the QR code image when the home page is initialized
+  }
+  _loadSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      documentId = prefs.getString('busno');
+      collectionName = prefs.getString('time');
+      active= prefs.getBool('active')!;
+    });
   }
 
   Future<void> loadQRCodeImage() async {
@@ -157,8 +170,39 @@ void downloadQRCodeAsPDF() async {
           children: [
             ElevatedButton(
               onPressed: () {
-                //////////////////////
-              },
+                _loadSharedPrefs();
+            print(documentId);
+            print(collectionName);
+            if (active!=false) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TicketScreen(
+                    documentId: documentId!,
+                    collectionName: collectionName!,
+                  ),
+                ),
+              );
+            } else {
+              // Handle case where shared preferences are not set
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Error'),
+                  content: Text('SET A ROUTE ACTIVE BY CLICKING POWERON ICON .'),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+              
               child: const Text('Live Tickets'),
             ),
 

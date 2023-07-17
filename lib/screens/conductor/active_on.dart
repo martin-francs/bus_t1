@@ -80,6 +80,7 @@ class _activeonscreenState extends State<activeonscreen> {
     // Save the active route in shared preferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('time', timestamp);
+    await prefs.setBool('active',true);
     
 
 

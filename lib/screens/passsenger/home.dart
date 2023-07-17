@@ -239,6 +239,13 @@ class _HomescreenState extends State<Homescreen> {
         icon: const Icon(Icons.camera_alt),
         onPressed: () {
           _scanQR();
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (ctx) {
+          //       return Busroutescreen(documentId: 'KL33N9999',userId: '9567867353');
+          //     },
+          //   ),
+          // );
         },
         label: const Text("Scan"),
       ),

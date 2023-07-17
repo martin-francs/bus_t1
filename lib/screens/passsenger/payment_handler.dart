@@ -5,35 +5,51 @@ import 'payment_service.dart';
 import 'package:uuid/uuid.dart';
 
 class PaymentHandler {
-  static void handlePayment(BuildContext context, String userId, double amountToPay, String start, String end, String busno, String busname) async {
+  static void handlePayment(BuildContext context, String userId, double amountToPay, String start, String end, String busno, String busname,String activeticket) async {
     bool paymentSuccess = await PaymentService.payFromWallet(userId, amountToPay);
-    String documentId = userId;
+    //String documentId = userId;
     if (paymentSuccess) {
       try {
+        print(activeticket);
         CollectionReference parentCollection = FirebaseFirestore.instance.collection('users');
-
-        DocumentReference documentRef = parentCollection.doc(documentId);
-
+           
+        DocumentReference documentRef = parentCollection.doc(userId);
+          
         CollectionReference ticketsCollection = documentRef.collection('tickets');
-
+        //for adding ticket in live ticket
+        CollectionReference parent1 = FirebaseFirestore.instance.collection('tickets');
+           
+        DocumentReference document1 = parent1.doc(busno);
+          
+        CollectionReference tickets1 = document1.collection(activeticket);
         // Extract the last 4 characters of the bus number
-        String busnoLast4 = busno.substring(busno.length - 4);
+       String busnoLast4 = busno.substring(busno.length - 4);
 
         // Generate a unique 3-digit alphanumeric code
         String ticketCode = const Uuid().v4().substring(0, 3).toUpperCase();
 
         // Create the document ID using the unique combination
-        String ticketId = '$busno-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
-
+        String ticketId = '$busnoLast4-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
+        //String time=DateTime.now() as String;
         // Create a new ticket document in the subcollection
         final newTicketRef = ticketsCollection.doc(ticketId);
-
+        // print('$busno  $busname');
         await newTicketRef.set({
           'busno': busno,
           'busname': busname,
           'start': start,
           'destination': end,
           'bookingDateTime': DateTime.now(),
+          'ticketcharge': amountToPay,
+        });
+        final newTicketRef1 = tickets1.doc(ticketId);
+        // print('$busno  $busname');
+        await newTicketRef1.set({
+          'busno': busno,
+          'busname': busname,
+          'start': start,
+          'destination': end,
+          'bookingDateTime':DateTime.now(),
           'ticketcharge': amountToPay,
         });
 

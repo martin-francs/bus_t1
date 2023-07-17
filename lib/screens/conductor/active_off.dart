@@ -52,6 +52,7 @@ class _activeoffscreenState extends State<activeoffscreen> {
     // Clear activeRoute and time value in shared preferences
     await prefs.setString('activeRoute', '');
     await prefs.setString('time', '');
+    await prefs.setBool('active',false);
     printSharedPreferences();
     // Navigate back to the previous screen or perform any other action
     Navigator.pop(context);

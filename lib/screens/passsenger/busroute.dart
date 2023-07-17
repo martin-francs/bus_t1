@@ -7,6 +7,7 @@ import 'payment_handler.dart';
 class Busroutescreen extends StatefulWidget {
   final String documentId;
    final String userId;
+   
   const Busroutescreen({super.key, required this.documentId,required this.userId});
 
   @override
@@ -20,19 +21,25 @@ class _BusroutescreenState extends State<Busroutescreen>  {
   //String userId='9567867353';
   //String documentId='KL33N9599';
   String field2 = '';
-  
+  String busno = '';
+  String busname = '';
+  String activeroute = '';
+  String activeticket = '';
   Future<Map<String, dynamic>> _fetchMapFields() async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
           .collection('buses')
           .doc(widget.documentId)
+          .collection('routes')
+          .doc(activeroute)
           .get();
 
       if (snapshot.exists) {
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        field1 = data['BUSNO'];
-        field2 = data['BusName'];
-        final Map<String, dynamic> mapFields = snapshot.data()!['STOPS'];
+        //print('hiiiii');
+        // Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        // field1 = data['BUSNO'];
+        // field2 = data['BusName'];
+        final Map<String, dynamic> mapFields = snapshot.data()!['stops'];
         return mapFields;
       } else {
         throw Exception('Document does not exist');
@@ -55,10 +62,39 @@ class _BusroutescreenState extends State<Busroutescreen>  {
   @override
   void initState() {
     super.initState();
-    _fetchDropdownItems();
+    _fetchDataAndInitializeVariables();
   }
+  Future<void> _fetchDataAndInitializeVariables() async {
+  try {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance
+            .collection('buses')
+            .doc(widget.documentId)
+            .get();
+
+    if (snapshot.exists) {
+      final Map<String, dynamic> data = snapshot.data()!;
+
+      setState(() {
+        busno = data['BUSNO'];
+        busname = data['BusName'];
+        activeroute = data['activeroute'];
+        activeticket= data['activeticket'];
+      });
+      // print(busno);
+      // print(busname);
+      // print(activeroute);
+      _fetchDropdownItems();
+    } else {
+      throw Exception('Document does not exist');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
 
   void _fetchDropdownItems() async {
+    _fetchDataAndInitializeVariables();
     final mapFields = await _fetchMapFields();
     final List<String> options = mapFields.values.cast<String>().toList();
     final List<String> options1 = mapFields.values.cast<String>().toList();
@@ -97,8 +133,10 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     else{
   final DocumentSnapshot<Map<String, dynamic>> snapshot =
       await FirebaseFirestore.instance
-          .collection('buses')
+            .collection('buses')
           .doc(widget.documentId)
+          .collection('routes')
+          .doc(activeroute)
           .get();
 
   if (snapshot.exists) {
@@ -131,12 +169,12 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('BUS NAME: $field2'),
+          title: Text('BUS NAME: $busname'),
         ),
         body: Column(
           children: [
             const SizedBox(height: 20),
-            Text('BUS no: $field1'),
+            Text('BUS no: $busno'),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -221,7 +259,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
         ),
       ),
        if (_showResult)
-      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, widget.userId, _finalresult,_selectedOption,_selectedOption1,field1,field2), child: const Text("PAY")),
+      ElevatedButton(onPressed: () => PaymentHandler.handlePayment(context, widget.userId, _finalresult,_selectedOption,_selectedOption1,busno,busname,activeticket), child: const Text("PAY")),
             ],
             
         ),

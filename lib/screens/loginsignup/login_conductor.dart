@@ -18,6 +18,7 @@ class LoginScreen2 extends StatelessWidget {
     prefs.setString('busno', documentId);
      await prefs.setString('activeRoute', '');
     await prefs.setString('time', '');
+    await prefs.setBool('active', false);
   }
   void login(BuildContext context) async {
     try {
