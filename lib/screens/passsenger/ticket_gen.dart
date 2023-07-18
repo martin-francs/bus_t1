@@ -50,11 +50,6 @@ class TicketDetailsScreen extends StatelessWidget {
                   'Destination: ${ticketData['destination']}',
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-/*                SizedBox(height: 10),
-                Text(
-                  'Seat Number: ${ticketData['seatNumber']}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),*/
                 const SizedBox(height: 10),
                 Text(
                   'Booking Date and Time: ${formatDate(bookingDateTime)}',

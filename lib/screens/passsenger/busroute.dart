@@ -18,8 +18,6 @@ class Busroutescreen extends StatefulWidget {
 class _BusroutescreenState extends State<Busroutescreen>  {
 
   String field1 = '';
-  //String userId='9567867353';
-  //String documentId='KL33N9599';
   String field2 = '';
   String busno = '';
   String busname = '';
@@ -33,12 +31,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
           .collection('routes')
           .doc(activeroute)
           .get();
-
       if (snapshot.exists) {
-        //print('hiiiii');
-        // Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        // field1 = data['BUSNO'];
-        // field2 = data['BusName'];
         final Map<String, dynamic> mapFields = snapshot.data()!['stops'];
         return mapFields;
       } else {
@@ -48,7 +41,6 @@ class _BusroutescreenState extends State<Busroutescreen>  {
       throw Exception('Failed to fetch document: $e');
     }
   }
-
   String _selectedOption = 'Placid';
   String _selectedOption1 = 'Placid';
   String start = '';
@@ -58,7 +50,6 @@ class _BusroutescreenState extends State<Busroutescreen>  {
    bool _showResult = false;
   List<DropdownMenuItem<String>> _dropdownItems = [];
   List<DropdownMenuItem<String>> _dropdownItems1 = [];
-
   @override
   void initState() {
     super.initState();
@@ -74,7 +65,6 @@ class _BusroutescreenState extends State<Busroutescreen>  {
 
     if (snapshot.exists) {
       final Map<String, dynamic> data = snapshot.data()!;
-
       setState(() {
         busno = data['BUSNO'];
         busname = data['BusName'];

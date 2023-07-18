@@ -17,10 +17,11 @@ class AddRoutePage extends StatefulWidget {
 class _AddRoutePageState extends State<AddRoutePage> {
   final TextEditingController _routeNameController = TextEditingController();
   final TextEditingController _pricePerKmController = TextEditingController();
-  final TextEditingController _startRouteController = TextEditingController(text: '0');
+  final TextEditingController _startRouteController = TextEditingController();
   final TextEditingController _stopNameController = TextEditingController();
   final TextEditingController _stopDistanceController = TextEditingController();
   List<Map<String, dynamic>> stops = [];
+  List<Map<String, dynamic>> stop1 = [];
   bool _isEditing = true;
   bool _isFirstSaveVisible = true;
   bool _isSecondSaveVisible = false;
@@ -36,14 +37,17 @@ class _AddRoutePageState extends State<AddRoutePage> {
 
   void _addStop() {
   String stopName = _stopNameController.text;
+  String stopD = _stopDistanceController.text;
   double stopDistance = double.tryParse(_stopDistanceController.text) ?? 0.0;
 
   if (stopName.isNotEmpty && stopDistance >= 0) {
     setState(() {
       stopCount++;
+      stop1.add({'stopname': stopName,
+        'distance': stopD});
       stops.add({
         'stop$stopCount': stopName,
-        'distance': stopDistance,
+        'distance': stopD,
       });
       _stopNameController.clear();
       _stopDistanceController.clear();
@@ -55,6 +59,7 @@ class _AddRoutePageState extends State<AddRoutePage> {
 void _saveRouteAgain() async {
   String routeName = _routeNameController.text;
   String startRoute = _startRouteController.text;
+  String pricepk =_pricePerKmController.text;
   double pricePerKm = double.tryParse(_pricePerKmController.text) ?? 0.0;
 
   if (routeName.isEmpty || startRoute.isEmpty || pricePerKm <= 0) {
@@ -63,23 +68,23 @@ void _saveRouteAgain() async {
 
   try {
     Map<String, dynamic> stopsMap = {};
-    Map<String, double> kmMap = {};
+    Map<String, dynamic> kmMap = {};
     // Create a shared preferences instance
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Save the route details to shared preferences
     await prefs.setString('routeName', routeName);
     await prefs.setString('startRoute', startRoute);
-    await prefs.setDouble('pricePerKm', pricePerKm);
+    await prefs.setString('pricePerKm', pricepk);
 
 
     // Add start route to stopsMap and kmMap
     stopsMap['stop0'] = startRoute;
-    kmMap[startRoute] = 0.0;
+    kmMap[startRoute] = '0';
 
     for (int i = 0; i < stops.length; i++) {
       String stopName = stops[i]['stop${i + 1}'];
-      double stopDistance = stops[i]['distance'];
+      String stopDistance = stops[i]['distance'];
       stopsMap['stop${i + 1}'] = stopName;
       kmMap[stopName] = stopDistance;
     }
@@ -95,7 +100,7 @@ void _saveRouteAgain() async {
       'startRoute': startRoute,
       'stops': stopsMap,
       'km': kmMap,
-      'priceperkm': pricePerKm,
+      'priceperkm': pricepk,
     });
 
     // Show success message or navigate to another screen
@@ -187,11 +192,11 @@ void _saveRouteAgain() async {
                     ),
                     const SizedBox(height: 10),
                     Column(
-                      children: stops.map((stop) {
+                      children: stop1.map((stop) {
                         return Row(
                           children: [
                             Expanded(
-                              child: Text('${stop['name']}'),
+                              child: Text('${stop['stopname']}'),
                             ),
                             const SizedBox(width: 10),
                             Text('Distance: ${stop['distance']} km'),

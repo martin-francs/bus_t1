@@ -10,28 +10,15 @@ class PaymentHandler {
     //String documentId = userId;
     if (paymentSuccess) {
       try {
-        print(activeticket);
         CollectionReference parentCollection = FirebaseFirestore.instance.collection('users');
-           
         DocumentReference documentRef = parentCollection.doc(userId);
-          
         CollectionReference ticketsCollection = documentRef.collection('tickets');
-        //for adding ticket in live ticket
         CollectionReference parent1 = FirebaseFirestore.instance.collection('tickets');
-           
         DocumentReference document1 = parent1.doc(busno);
-          
         CollectionReference tickets1 = document1.collection(activeticket);
-        // Extract the last 4 characters of the bus number
        String busnoLast4 = busno.substring(busno.length - 4);
-
-        // Generate a unique 3-digit alphanumeric code
         String ticketCode = const Uuid().v4().substring(0, 3).toUpperCase();
-
-        // Create the document ID using the unique combination
         String ticketId = '$busnoLast4-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
-        //String time=DateTime.now() as String;
-        // Create a new ticket document in the subcollection
         final newTicketRef = ticketsCollection.doc(ticketId);
         // print('$busno  $busname');
         await newTicketRef.set({
