@@ -123,6 +123,7 @@ void downloadQRCodeAsPDF() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: const Text('Conductor Home'),
       ),
       drawer: Drawer(
@@ -164,15 +165,135 @@ void downloadQRCodeAsPDF() async {
           ],
         ),
       ),
-      body: Center(
+      body: SafeArea(
+
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                _loadSharedPrefs();
-            print(documentId);
-            print(collectionName);
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                '   Welcome,\n   $documentId',
+                style: const TextStyle(fontSize: 35, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 148, 111, 0)),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('conductors')
+                  .doc(documentId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Error fetching balance');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+
+                double balance = snapshot.data?['walletAmount'] ?? 0.0;
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 32),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Color.fromRGBO(218, 164, 28, 1),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 16,
+                            backgroundColor: Color.fromRGBO(50, 172, 121, 1),
+                            child: Icon(
+                              Icons.wallet_giftcard_sharp,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          Text(
+                            "MAIN BALANCE",
+                            style: TextStyle(
+                                fontStyle: FontStyle.normal,
+                                fontSize: 28,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircleAvatar(
+                            radius: 16,
+                            child: Icon(
+                              Icons.currency_rupee,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            balance.toString(),
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 2.0),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "TICKETS HISTORY",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Color.fromARGB(255, 182, 34, 11),
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 2.0),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                },
+                                icon: const Icon(Icons.history),
+                                iconSize: 28,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                 _loadSharedPrefs();
+            // print(documentId);
+            // print(collectionName);
             if (active!=false) {
               Navigator.push(
                 context,
@@ -201,13 +322,36 @@ void downloadQRCodeAsPDF() async {
                 ),
               );
             }
-          },
-              
-              child: const Text('Live Tickets'),
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color.fromARGB(255, 144, 130, 39), // Replace with your desired color
+                ),
+                padding: const EdgeInsets.all(16),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "LIVE TICKETS",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Icon(
+                      Icons.history_outlined,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
             ),
-
-            ElevatedButton(
-              onPressed: () {
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -215,7 +359,31 @@ void downloadQRCodeAsPDF() async {
                   ),
                 );
               },
-              child: const Text('Route Management'),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color.fromARGB(255, 139, 167, 19), // Replace with your desired color
+                ),
+                padding: const EdgeInsets.all(16),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "ROUTE MANAGEMENT",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Icon(
+                      Icons.history_outlined,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

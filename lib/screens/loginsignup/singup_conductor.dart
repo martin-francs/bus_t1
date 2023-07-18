@@ -96,6 +96,7 @@ class _SignUpConductorState extends State<SignUpConductor> {
         'busID': busID,
         'busname': busname,
         'password': password,
+        'walletAmount': 5.5,
       });
       await FirebaseFirestore.instance.collection('buses').doc(busID).set({
       'BusName': busname,

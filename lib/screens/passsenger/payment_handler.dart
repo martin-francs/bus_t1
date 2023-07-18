@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 class PaymentHandler {
   static void handlePayment(BuildContext context, String userId, double amountToPay, String start, String end, String busno, String busname,String activeticket) async {
-    bool paymentSuccess = await PaymentService.payFromWallet(userId, amountToPay);
+    bool paymentSuccess = await PaymentService.payFromWallet(userId,busno,amountToPay);
     //String documentId = userId;
     if (paymentSuccess) {
       try {

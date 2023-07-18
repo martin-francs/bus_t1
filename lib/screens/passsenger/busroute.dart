@@ -23,6 +23,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
   String busname = '';
   String activeroute = '';
   String activeticket = '';
+  bool flag=false;
   Future<Map<String, dynamic>> _fetchMapFields() async {
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
@@ -74,7 +75,11 @@ class _BusroutescreenState extends State<Busroutescreen>  {
       // print(busno);
       // print(busname);
       // print(activeroute);
+      if(flag==false)
+      {
       _fetchDropdownItems();
+      flag=true;
+      }
     } else {
       throw Exception('Document does not exist');
     }
@@ -89,7 +94,7 @@ class _BusroutescreenState extends State<Busroutescreen>  {
     final List<String> options = mapFields.values.cast<String>().toList();
     final List<String> options1 = mapFields.values.cast<String>().toList();
     _selectedOption=options.first;
-    _selectedOption1=options1[1];
+     _selectedOption1=options1[1];
     final List<DropdownMenuItem<String>> items = options
         .map<DropdownMenuItem<String>>((value) => DropdownMenuItem<String>(
               value: value,
