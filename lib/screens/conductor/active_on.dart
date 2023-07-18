@@ -109,7 +109,7 @@ class _activeonscreenState extends State<activeonscreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Dismiss dialog
-                navigateToHomeScreen(); // Navigate to home screen
+                Navigator.of(context).pop(); // Navigate to home screen
               },
               child: const Text('OK'),
             ),
@@ -118,12 +118,13 @@ class _activeonscreenState extends State<activeonscreen> {
       },
     );
   }
-}void navigateToHomeScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ConductorHomePage(busID: '',),
-      ),
-    );
-  }
+}
+//void navigateToHomeScreen() {
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => const ConductorHomePage(busID:''),
+//       ),
+//     );
+//   }
 }
