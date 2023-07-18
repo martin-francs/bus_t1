@@ -1,13 +1,14 @@
 import 'package:bus_t/screens/passsenger/ticket_gen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart'; // Import this package for accessing colors
 import 'payment_service.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:math';
 
 class PaymentHandler {
-  static void handlePayment(BuildContext context, String userId, double amountToPay, String start, String end, String busno, String busname,String activeticket) async {
-    bool paymentSuccess = await PaymentService.payFromWallet(userId,busno,amountToPay);
-    //String documentId = userId;
+  static void handlePayment(BuildContext context, String userId, double amountToPay, String start, String end, String busno, String busname, String activeticket) async {
+    bool paymentSuccess = await PaymentService.payFromWallet(userId, busno, amountToPay);
     if (paymentSuccess) {
       try {
         CollectionReference parentCollection = FirebaseFirestore.instance.collection('users');
@@ -16,11 +17,15 @@ class PaymentHandler {
         CollectionReference parent1 = FirebaseFirestore.instance.collection('tickets');
         DocumentReference document1 = parent1.doc(busno);
         CollectionReference tickets1 = document1.collection(activeticket);
-       String busnoLast4 = busno.substring(busno.length - 4);
+        String busnoLast4 = busno.substring(busno.length - 4);
         String ticketCode = const Uuid().v4().substring(0, 3).toUpperCase();
         String ticketId = '$busnoLast4-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
         final newTicketRef = ticketsCollection.doc(ticketId);
-        // print('$busno  $busname');
+        final newTicketRef1 = tickets1.doc(ticketId);
+
+        // Generate a random color value
+        final randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+        
         await newTicketRef.set({
           'busno': busno,
           'busname': busname,
@@ -28,19 +33,19 @@ class PaymentHandler {
           'destination': end,
           'bookingDateTime': DateTime.now(),
           'ticketcharge': amountToPay,
+          'color': randomColor.value, // Assign the random color value
         });
-        final newTicketRef1 = tickets1.doc(ticketId);
-        // print('$busno  $busname');
+        
         await newTicketRef1.set({
           'busno': busno,
           'busname': busname,
           'start': start,
           'destination': end,
-          'bookingDateTime':DateTime.now(),
+          'bookingDateTime': DateTime.now(),
           'ticketcharge': amountToPay,
+          'color': randomColor.value, // Assign the random color value
         });
 
-        // Navigate to the ticket details screen
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -65,7 +70,6 @@ class PaymentHandler {
         );
       }
     } else {
-      // Payment failed or insufficient funds, show appropriate message
       showDialog(
         context: context,
         builder: (BuildContext context) {

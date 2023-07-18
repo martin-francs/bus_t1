@@ -3,21 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Ticket {
   final String id;
-  //final String title;
-  //final String description;
+  final int color; // Add a color field
 
   Ticket({
     required this.id,
-    //required this.title,
-   // required this.description,
+    required this.color,
   });
 
   factory Ticket.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Ticket(
       id: doc.id,
-     // title: data['title'] ?? '',
-      //description: data['description'] ?? '',
+      color: data['color'] ?? Color.fromARGB(0, 255, 255, 255).value, // Fetch the color value from Firestore
     );
   }
 }
@@ -63,10 +60,13 @@ class TicketScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                var ticket = snapshot.data![index];
-                return ListTile(
-                  title: Text(ticket.id),
-                  //subtitle: Text(ticket.description),
+                var ticket = snapshot.data![snapshot.data!.length - index - 1];
+                return Container(
+                  color: Color(ticket.color), // Use the color value fetched from Firestore
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Text(ticket.id),
+                  ),
                 );
               },
             );
@@ -76,5 +76,3 @@ class TicketScreen extends StatelessWidget {
     );
   }
 }
-
-

@@ -47,7 +47,7 @@ class _TicketHistoryScreenState extends State<TicketHistoryScreen> {
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              DocumentSnapshot ticketSnapshot = snapshot.data!.docs[index];
+              DocumentSnapshot ticketSnapshot = snapshot.data!.docs[snapshot.data!.docs.length - index - 1];
               Map<String, dynamic>? ticketData = ticketSnapshot.data()
                   as Map<String, dynamic>?; // Mark ticketData as nullable
 
