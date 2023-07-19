@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'c_home.dart';
 
 class activeonscreen extends StatefulWidget {
   final String? busno;
@@ -93,7 +92,7 @@ class _activeonscreenState extends State<activeonscreen> {
     CollectionReference ticketsCollection =
         FirebaseFirestore.instance.collection('tickets');
     DocumentReference ticketDocument =
-        ticketsCollection.doc(widget.busno).collection(timestamp).doc('dummyticket');
+        ticketsCollection.doc(widget.busno).collection(timestamp).doc('ACTIVE ROUTE: $routeId');
     await ticketDocument.set({'routeId': routeId});
     // Save the timestamp in shared preferences
     await prefs.setString('activeRoute', routeId);

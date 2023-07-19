@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bus_t/screens/conductor/active_off.dart';
 import 'package:bus_t/screens/conductor/active_on.dart';
+import 'package:bus_t/screens/conductor/paymenthistory.dart';
 import 'package:bus_t/screens/conductor/routes_management.dart';
 import 'package:bus_t/screens/loginsignup/welcome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'livetickets.dart';
 
 
@@ -274,6 +274,12 @@ void downloadQRCodeAsPDF() async {
                               ),
                               IconButton(
                                 onPressed: () {
+                                   Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => paymentHistoryScreen(documentId:widget.busID),
+                  ),
+                );
                                 },
                                 icon: const Icon(Icons.history),
                                 iconSize: 28,

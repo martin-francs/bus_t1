@@ -17,12 +17,15 @@ class PaymentHandler {
         CollectionReference parent1 = FirebaseFirestore.instance.collection('tickets');
         DocumentReference document1 = parent1.doc(busno);
         CollectionReference tickets1 = document1.collection(activeticket);
+        CollectionReference parent2 = FirebaseFirestore.instance.collection('conductors');
+        DocumentReference document2 = parent2.doc(busno);
+        CollectionReference tickets2 = document2.collection('Payments');
         String busnoLast4 = busno.substring(busno.length - 4);
         String ticketCode = const Uuid().v4().substring(0, 3).toUpperCase();
         String ticketId = '$busnoLast4-${DateTime.now().millisecondsSinceEpoch}-$ticketCode';
         final newTicketRef = ticketsCollection.doc(ticketId);
         final newTicketRef1 = tickets1.doc(ticketId);
-
+        final newTicketRef2 = tickets2.doc(ticketId);
         // Generate a random color value
         final randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
         
@@ -45,6 +48,16 @@ class PaymentHandler {
           'ticketcharge': amountToPay,
           'color': randomColor.value, // Assign the random color value
         });
+        await newTicketRef2.set({
+          'busno': busno,
+          'busname': busname,
+          'start': start,
+          'destination': end,
+          'bookingDateTime': DateTime.now(),
+          'ticketcharge': amountToPay,
+          'color': randomColor.value, 
+        });
+
 
         Navigator.push(
           context,

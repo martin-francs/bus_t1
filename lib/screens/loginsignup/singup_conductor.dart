@@ -108,7 +108,11 @@ class _SignUpConductorState extends State<SignUpConductor> {
       'BusName': busname,
       'BUSNO': busID,
     });
-
+    // CollectionReference ticketsCollection =
+    //     FirebaseFirestore.instance.collection('conductors');
+    // DocumentReference ticketDocument =
+    //     ticketsCollection.doc(busID).collection('Payments').doc('YOUR PAYMENTS');
+    // await ticketDocument.set({'BUSNAME': busname});
       // Generate and upload the QR code
       await generateAndUploadQRCode(busID);
     } catch (error) {
